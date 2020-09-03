@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            <h2>SpaceX Launch Programs</h2>
+        </header>
+
+        <main>
+            <aside>
+                <h3>Filters</h3>
+                <div class="options launch-year">
+                    <h5>Launch Year</h5>
+                  
+                   
+                    <ul class="yearlist">
+                        <li>2006</li>
+                        <li>2007</li>
+                        <li>2008</li>
+                        <li>2009</li>
+                        <li>2010</li>
+                        <li>2011</li>
+                        <li>2012</li>
+                        <li>2013</li>
+                        <li>2014</li>
+                        <li>2015</li>
+                        <li>2016</li>
+                        <li>2017</li>
+                        <li>2018</li>
+                        <li>2019</li>
+                        <li><a>2020</a></li>
+                    </ul>
+                </div>
+                <div class="options launch-success">
+                    <h5>Successful Launch</h5>
+                    <ul>
+                        <li><a data-success="true">True</a></li>
+                        <li><a data-success="false">False</a></li>
+                    </ul>
+                </div>
+                <div class="options land-success">
+                    <h5>Successful Landing</h5>
+                    <ul>
+                        <li><a data-success="true">True</a></li>
+                        <li><a data-success="false">False</a></li>
+                    </ul>
+                </div>
+     
+               
+
+            </aside>
+
+            <section>
+             <div id="demo"></div> 
+              <ul class="tumcontent"></ul>
+            </section>
+        </main>
+        <footer>
+            <span><b>Developed By :</b> Hemant Kumar</span>
+        </footer>
+    </div>
+
+    
+    
+    <script>
+const _url = 'https://api.spacexdata.com/v3/launches?limit=100';
+let apidata = []
+fetch(_url)
+.then((response)=> response.json())
+.then((data)=>{
+  apidata = data  
+  //console.log(apidata)
+ let btn = document.querySelectorAll('ul.yearlist li');
+
+ btn.forEach((item)=>{
+  item.addEventListener('click', (e)=>{    
+      e.target.classList.add('active');
+    let finalData = []
+   let yearVal  = e.target.innerHTML   
+   apidata.forEach(item=>{
+       if(yearVal == item.launch_year){   
+        finalData.push(item);        
+       }
+   })  
+   console.log(finalData); 
+   let htmlContent = ''
+   finalData.forEach(data=>{
+    htmlContent += `
+    <li>
+    <img src="${data.links.mission_patch}" />
+    <div class="box">
+    <h5>${data.mission_name}</h5> 
+    <h6>Mission IDs:</h6>
+    ${data.mission_id[0]}
+    <h4>Launch Year : ${data.launch_year}</h4>
+    <p>Successfull launch:  ${data.launch_success}</p>
+    <p>Successfull landing:  ${data.is_tentative}</p>
+    </div>
+        </li>
+    `
+   })
+
+document.querySelector('.tumcontent').innerHTML = htmlContent
+
+   })
+ })
+ 
+
+
+})
+
+
+
+</script>
+</body>
+</html>
